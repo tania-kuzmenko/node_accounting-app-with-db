@@ -23,6 +23,9 @@ export const update = async ({ id, name }) => {
       where: { id },
     },
   );
+
+  const updatedCategory = await getById(id);
+  return updatedCategory;
 };
 
 export const remove = async (id) => {

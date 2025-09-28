@@ -33,7 +33,8 @@ export const Expense = sequelize.define(
       allowNull: true,
     },
     spentAt: {
-      type: DataTypes.NOW,
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
       field: 'spentat',
       allowNull: false,
     },
@@ -43,4 +44,6 @@ export const Expense = sequelize.define(
     createdAt: false,
     updatedAt: false,
   },
+
+  Expense.belongsTo(User, { foreignKey: 'userId' })
 );

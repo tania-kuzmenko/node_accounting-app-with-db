@@ -55,7 +55,8 @@ export const create = async (req, res) => {
     return;
   }
 
-  if (userService.getById(userId) === null) {
+  const isUser = await userService.getById(userId);
+  if (isUser === null) {
     res.status(400).send('User not found');
 
     return;
@@ -75,7 +76,7 @@ export const create = async (req, res) => {
 
 export const update = async (req, res) => {
   const id = Number(req.params.id);
-  const expense = expenseService.getById(id);
+  const expense = await expenseService.getById(id);
 
   if (!expense) {
     return res.sendStatus(404);
@@ -103,7 +104,8 @@ export const update = async (req, res) => {
 export const remove = async (req, res) => {
   const id = Number(req.params.id);
 
-  if (!expenseService.getById(id)) {
+  const isExpense = await expenseService.getById(id);
+  if (!isExpense) {
     res.status(404).send('Not found');
 
     return;

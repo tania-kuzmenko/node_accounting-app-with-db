@@ -40,7 +40,8 @@ export const update = async (req, res) => {
     return res.status(400).send('ID is required');
   }
 
-  if (!categoryService.getById(id)) {
+  const isExist = await categoryService.getById(id);
+  if (!isExist) {
     return res.status(404).send('Category Not found');
   }
 
@@ -51,7 +52,8 @@ export const update = async (req, res) => {
 export const remove = async (req, res) => {
   const id = Number(req.params.id);
 
-  if (!categoryService.getById(id)) {
+  const isExist = await categoryService.getById(id);
+  if (!isExist) {
     res.status(404).send('Not found');
 
     return;
