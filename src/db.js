@@ -1,10 +1,11 @@
 'use strict';
 
-const { Sequelize } = require('sequelize');
-const utils = require('util');
+import { Sequelize } from 'sequelize';
+import utils from 'util';
 
 // Needed for testing purposes, do not remove
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 global.TextEncoder = utils.TextEncoder;
 
 const {
@@ -20,15 +21,11 @@ const {
   replace if needed with your own
 */
 
-const sequelize = new Sequelize({
+export const sequelize = new Sequelize({
   database: POSTGRES_DB || 'postgres',
   username: POSTGRES_USER || 'postgres',
   host: POSTGRES_HOST || 'localhost',
   dialect: 'postgres',
   port: POSTGRES_PORT || 5432,
-  password: POSTGRES_PASSWORD || '123',
+  password: POSTGRES_PASSWORD || 'Begemotik12!@',
 });
-
-module.exports = {
-  sequelize,
-};

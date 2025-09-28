@@ -1,9 +1,10 @@
 'use strict';
+
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../db.js';
 
-export const User = sequelize.define(
-   'User',
+export const Category = sequelize.define(
+  'Category',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -17,9 +18,8 @@ export const User = sequelize.define(
     },
   },
   {
-    tableName: 'users',
+    tableName: 'categories',
     createdAt: false,
     updatedAt: false,
   },
 );
-
