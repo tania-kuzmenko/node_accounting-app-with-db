@@ -1,9 +1,9 @@
 'use strict';
 
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../db.js';
+const DataTypes = require('sequelize');
+const sequelize = require('../db.js');
 
-export const Category = sequelize.define(
+const Category = sequelize.define(
   'Category',
   {
     id: {
@@ -23,3 +23,5 @@ export const Category = sequelize.define(
     updatedAt: false,
   },
 );
+
+module.exports = Category;

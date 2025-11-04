@@ -1,20 +1,20 @@
-import { Expense } from '../models/Expense.model.js';
-import * as  userService  from '../services/user.service.js';
+const Expense = require('../models/Expense.model.js');
+const userService = require('../services/user.service.js');
 
-export const getAll = async () => {
+const getAll = async () => {
   const result = await Expense.findAll();
 
   return result;
 };
 
-export const getById = async (id) => {
+const getById = async (id) => {
   const result = await Expense.findByPk(id);
 
   return result;
 };
 
-export const create = ({ userId, spentAt, title, amount, category, note }) => {
-  const user = userService.getById(userId);
+const create = async ({ userId, spentAt, title, amount, category, note }) => {
+  const user = await userService.getById(userId);
 
   if (!user) {
     return null;
@@ -30,7 +30,7 @@ export const create = ({ userId, spentAt, title, amount, category, note }) => {
   });
 };
 
-export const update = async ({
+const update = async ({
   id,
   userId,
   spentAt,
@@ -54,12 +54,14 @@ export const update = async ({
   );
 };
 
-export const remove = async (id) => {
+const remove = async (id) => {
   await Expense.destroy({ where: { id } });
 };
 
-// const reset = async () => {
-//   await sequelize.query(`DELETE FROM expenses`, {
-//     type: sequelize.QueryTypes.bulkDelete,
-//   });
-// };
+module.exports = {
+  getAll,
+  getById,
+  create,
+  update,
+  remove,
+};

@@ -1,12 +1,12 @@
-import * as userService from '../services/user.service.js';
+const userService = require('../services/user.service.js');
 
-export const get = async (req, res) => {
+const get = async (req, res) => {
   const users = await userService.getAll();
 
   res.send(users);
 };
 
-export const getOne = async (req, res) => {
+const getOne = async (req, res) => {
   const id = Number(req.params.id);
   const user = await userService.getById(id);
 
@@ -16,7 +16,7 @@ export const getOne = async (req, res) => {
   res.send(user);
 };
 
-export const create = (req, res) => {
+const create = (req, res) => {
   const { name } = req.body;
 
   if (!name) {
@@ -28,7 +28,7 @@ export const create = (req, res) => {
   res.status(201).send(user);
 };
 
-export const update = (req, res) => {
+const update = (req, res) => {
   const id = Number(req.params.id);
   const { name } = req.body;
 
@@ -47,7 +47,7 @@ export const update = (req, res) => {
   res.send(updatedUser);
 };
 
-export const remove = (req, res) => {
+const remove = (req, res) => {
   const id = Number(req.params.id);
 
   if (!userService.getById(id)) {
@@ -58,4 +58,12 @@ export const remove = (req, res) => {
 
   userService.remove(id);
   res.sendStatus(204);
+};
+
+module.exports = {
+  get,
+  getOne,
+  create,
+  update,
+  remove,
 };

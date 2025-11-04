@@ -1,12 +1,12 @@
-import * as categoryService from '../services/category.service.js';
+const categoryService = require('../services/category.service.js');
 
-export const get = async (req, res) => {
+const get = async (req, res) => {
   const categories = await categoryService.getAll();
 
   res.send(categories);
 };
 
-export const getOne = async (req, res) => {
+const getOne = async (req, res) => {
   const id = Number(req.params.id);
   const category = await categoryService.getById(id);
 
@@ -16,7 +16,7 @@ export const getOne = async (req, res) => {
   res.send(category);
 };
 
-export const create = async (req, res) => {
+const create = async (req, res) => {
   const { name } = req.body;
 
   if (!name) {
@@ -28,7 +28,7 @@ export const create = async (req, res) => {
   res.status(201).send(category);
 };
 
-export const update = async (req, res) => {
+const update = async (req, res) => {
   const id = Number(req.params.id);
   const { name } = req.body;
 
@@ -41,18 +41,21 @@ export const update = async (req, res) => {
   }
 
   const isExist = await categoryService.getById(id);
+
   if (!isExist) {
     return res.status(404).send('Category Not found');
   }
 
   const updatedCategory = await categoryService.update({ id, name });
+
   res.send(updatedCategory);
 };
 
-export const remove = async (req, res) => {
+const remove = async (req, res) => {
   const id = Number(req.params.id);
 
   const isExist = await categoryService.getById(id);
+
   if (!isExist) {
     res.status(404).send('Not found');
 
@@ -61,4 +64,12 @@ export const remove = async (req, res) => {
 
   await categoryService.remove(id);
   res.sendStatus(204);
+};
+
+module.exports = {
+  get,
+  getOne,
+  create,
+  update,
+  remove,
 };

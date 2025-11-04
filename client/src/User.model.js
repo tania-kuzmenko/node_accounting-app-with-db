@@ -1,9 +1,8 @@
 'use strict';
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../db.js';
 
-const DataTypes = require('sequelize');
-const sequelize = require('../db.js');
-
-const User = sequelize.define(
+export const User = sequelize.define(
   'User',
   {
     id: {
@@ -23,5 +22,3 @@ const User = sequelize.define(
     updatedAt: false,
   },
 );
-
-module.exports = User;

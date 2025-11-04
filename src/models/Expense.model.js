@@ -1,8 +1,10 @@
 'use strict';
-import { sequelize } from '../db.js';
-import { DataTypes } from 'sequelize';
 
-export const Expense = sequelize.define(
+const sequelize = require('../db.js');
+const DataTypes = require('sequelize');
+const User = require('./User.model.js');
+
+const Expense = sequelize.define(
   'Expense',
   {
     id: {
@@ -44,6 +46,8 @@ export const Expense = sequelize.define(
     createdAt: false,
     updatedAt: false,
   },
-
-  Expense.belongsTo(User, { foreignKey: 'userId' })
 );
+
+Expense.belongsTo(User, { foreignKey: 'userId' });
+
+module.exports = Expense;

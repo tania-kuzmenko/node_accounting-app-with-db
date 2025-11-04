@@ -1,7 +1,7 @@
-import * as  expenseService from '../services/expense.service.js';
-import * as userService from '../services/user.service.js';
+const expenseService = require('../services/expense.service.js');
+const userService = require('../services/user.service.js');
 
-export const get = async (req, res) => {
+const get = async (req, res) => {
   let result = await expenseService.getAll();
   const { userId, categories, from, to } = req.query;
 
@@ -30,7 +30,7 @@ export const get = async (req, res) => {
   res.send(result);
 };
 
-export const getOne = async (req, res) => {
+const getOne = async (req, res) => {
   const id = Number(req.params.id);
   const expense = await expenseService.getById(id);
 
@@ -40,7 +40,7 @@ export const getOne = async (req, res) => {
   res.send(expense);
 };
 
-export const create = async (req, res) => {
+const create = async (req, res) => {
   const { userId, spentAt, title, amount, category, note } = req.body;
 
   if (
@@ -56,6 +56,7 @@ export const create = async (req, res) => {
   }
 
   const isUser = await userService.getById(userId);
+
   if (isUser === null) {
     res.status(400).send('User not found');
 
@@ -74,7 +75,7 @@ export const create = async (req, res) => {
   res.status(201).send(expense);
 };
 
-export const update = async (req, res) => {
+const update = async (req, res) => {
   const id = Number(req.params.id);
   const expense = await expenseService.getById(id);
 
@@ -101,10 +102,11 @@ export const update = async (req, res) => {
   res.send(updatedExpense);
 };
 
-export const remove = async (req, res) => {
+const remove = async (req, res) => {
   const id = Number(req.params.id);
 
   const isExpense = await expenseService.getById(id);
+
   if (!isExpense) {
     res.status(404).send('Not found');
 
@@ -112,4 +114,12 @@ export const remove = async (req, res) => {
   }
   await expenseService.remove(id);
   res.sendStatus(204);
+};
+
+module.exports = {
+  get,
+  getOne,
+  create,
+  update,
+  remove,
 };

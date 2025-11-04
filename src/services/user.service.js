@@ -1,22 +1,22 @@
-import { User } from '../models/User.model.js';
+const User = require('../models/User.model.js');
 
-export const getAll = async () => {
+const getAll = async () => {
   const users = await User.findAll();
 
   return users;
 };
 
-export const getById = async (id) => {
+const getById = async (id) => {
   const user = await User.findByPk(id);
 
   return user;
 };
 
-export const create = (name) => {
+const create = (name) => {
   return User.create({ name });
 };
 
-export const update = async ({ id, name }) => {
+const update = async ({ id, name }) => {
   await User.update(
     { id, name },
     {
@@ -25,6 +25,14 @@ export const update = async ({ id, name }) => {
   );
 };
 
-export const remove = async (id) => {
+const remove = async (id) => {
   await User.destroy({ where: { id } });
+};
+
+module.exports = {
+  getAll,
+  getById,
+  create,
+  update,
+  remove,
 };
