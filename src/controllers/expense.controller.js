@@ -47,8 +47,7 @@ const create = async (req, res) => {
     typeof userId !== 'number' ||
     !spentAt ||
     !title ||
-    typeof amount !== 'number' ||
-    !category
+    typeof amount !== 'number'
   ) {
     res.status(400).send('Missing required fields');
 
@@ -69,7 +68,7 @@ const create = async (req, res) => {
     title,
     amount,
     category,
-    note: note || '',
+    note,
   });
 
   res.status(201).send(expense);

@@ -1,5 +1,6 @@
-const Expense = require('../models/Expense.model.js');
+const { Expense } = require('../models/Expense.model.js');
 const userService = require('../services/user.service.js');
+const { Sequelize } = require('../db');
 
 const getAll = async () => {
   const result = await Expense.findAll();
@@ -20,14 +21,22 @@ const create = async ({ userId, spentAt, title, amount, category, note }) => {
     return null;
   }
 
-  return Expense.create({
-    userId,
-    spentAt,
-    title,
-    amount,
-    category,
-    note,
-  });
+  try {
+    return Expense.create({
+      userId,
+      spentAt,
+      title,
+      amount,
+      category,
+      note,
+    });
+  } catch (error) {
+    if (error instanceof Sequelize.UniqueConstraintError) {
+      throw Object.assign(new Error('Expense already exists'), { status: 400 });
+    }
+
+    throw Object.assign(new Error('Failed to create expense'), { status: 500 });
+  }
 };
 
 const update = async ({
@@ -52,6 +61,8 @@ const update = async ({
       where: { id },
     },
   );
+
+  return Expense.findByPk(id);
 };
 
 const remove = async (id) => {

@@ -1,8 +1,7 @@
 'use strict';
 
-const sequelize = require('../db.js');
-const DataTypes = require('sequelize');
-const User = require('./User.model.js');
+const { sequelize } = require('../db.js');
+const { DataTypes } = require('sequelize');
 
 const Expense = sequelize.define(
   'Expense',
@@ -17,6 +16,9 @@ const Expense = sequelize.define(
       field: 'userid',
       allowNull: false,
       foreinKey: true,
+      references: { model: 'users', key: 'id' },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
     },
     amount: {
       type: DataTypes.INTEGER,
@@ -28,7 +30,7 @@ const Expense = sequelize.define(
     },
     category: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     note: {
       type: DataTypes.STRING,
@@ -48,6 +50,4 @@ const Expense = sequelize.define(
   },
 );
 
-Expense.belongsTo(User, { foreignKey: 'userId' });
-
-module.exports = Expense;
+module.exports = { Expense };

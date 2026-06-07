@@ -1,7 +1,7 @@
 'use strict';
 
-const DataTypes = require('sequelize');
-const sequelize = require('../db.js');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../db.js');
 
 const Category = sequelize.define(
   'Category',
@@ -24,4 +24,4 @@ const Category = sequelize.define(
   },
 );
 
-module.exports = Category;
+module.exports = { Category };

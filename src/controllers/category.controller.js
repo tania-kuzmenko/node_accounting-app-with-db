@@ -8,6 +8,11 @@ const get = async (req, res) => {
 
 const getOne = async (req, res) => {
   const id = Number(req.params.id);
+
+  if (!Number.isInteger(id) || id <= 0) {
+    return res.status(400).send('Invalid id');
+  }
+
   const category = await categoryService.getById(id);
 
   if (!category) {
@@ -23,9 +28,16 @@ const create = async (req, res) => {
     return res.status(400).send('Name is required');
   }
 
-  const category = await categoryService.create(name);
+  try {
+    const category = await categoryService.create(name);
 
-  res.status(201).send(category);
+    res.status(201).send(category);
+  } catch (err) {
+    if (err.name === 'SequelizeUniqueConstraintError') {
+      return res.status(409).send('Category with this name already exists');
+    }
+    throw err;
+  }
 };
 
 const update = async (req, res) => {
@@ -36,7 +48,7 @@ const update = async (req, res) => {
     return res.status(400).send('Name is required');
   }
 
-  if (!id) {
+  if (!Number.isInteger(id) || id <= 0) {
     return res.status(400).send('ID is required');
   }
 
@@ -48,11 +60,18 @@ const update = async (req, res) => {
 
   const updatedCategory = await categoryService.update({ id, name });
 
+  if (!updatedCategory) {
+    return res.sendStatus(404);
+  }
   res.send(updatedCategory);
 };
 
 const remove = async (req, res) => {
   const id = Number(req.params.id);
+
+  if (!Number.isInteger(id) || id <= 0) {
+    return res.status(400).send('ID is required');
+  }
 
   const isExist = await categoryService.getById(id);
 

@@ -1,7 +1,7 @@
 'use strict';
 
-const DataTypes = require('sequelize');
-const sequelize = require('../db.js');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../db.js');
 
 const User = sequelize.define(
   'User',
@@ -24,4 +24,11 @@ const User = sequelize.define(
   },
 );
 
-module.exports = User;
+User.addHook('beforeBulkDestroy', async (options) => {
+  if (options.truncate) {
+    await sequelize.query('TRUNCATE "users" CASCADE');
+    options.truncate = false; // запобігаємо повторному truncate
+  }
+});
+
+module.exports = { User };

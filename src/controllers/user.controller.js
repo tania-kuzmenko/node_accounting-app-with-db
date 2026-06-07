@@ -16,19 +16,19 @@ const getOne = async (req, res) => {
   res.send(user);
 };
 
-const create = (req, res) => {
+const create = async (req, res) => {
   const { name } = req.body;
 
   if (!name) {
     return res.status(400).send('Name is required');
   }
 
-  const user = userService.create(name);
+  const user = await userService.create(name);
 
   res.status(201).send(user);
 };
 
-const update = (req, res) => {
+const update = async (req, res) => {
   const id = Number(req.params.id);
   const { name } = req.body;
 
@@ -36,27 +36,27 @@ const update = (req, res) => {
     return res.status(400).send('Name is required');
   }
 
-  const user = userService.getById(id);
+  const user = await userService.getById(id);
 
   if (!user) {
     return res.sendStatus(404);
   }
 
-  const updatedUser = userService.update({ id, name });
+  const updatedUser = await userService.update({ id, name });
 
   res.send(updatedUser);
 };
 
-const remove = (req, res) => {
+const remove = async (req, res) => {
   const id = Number(req.params.id);
 
-  if (!userService.getById(id)) {
+  if (!(await userService.getById(id))) {
     res.status(404).send('Not found');
 
     return;
   }
 
-  userService.remove(id);
+  await userService.remove(id);
   res.sendStatus(204);
 };
 

@@ -1,4 +1,4 @@
-const User = require('../models/User.model.js');
+const { User } = require('../models/User.model.js');
 
 const getAll = async () => {
   const users = await User.findAll();
@@ -12,21 +12,22 @@ const getById = async (id) => {
   return user;
 };
 
-const create = (name) => {
-  return User.create({ name });
+const create = async (name) => {
+  const user = await User.create({ name });
+
+  return user;
 };
 
 const update = async ({ id, name }) => {
-  await User.update(
-    { id, name },
-    {
-      where: { id },
-    },
-  );
+  await User.update({ name }, { where: { id }, returning: true });
+
+  return User.findByPk(id);
 };
 
 const remove = async (id) => {
-  await User.destroy({ where: { id } });
+  const deletedCount = await User.destroy({ where: { id } });
+
+  return deletedCount;
 };
 
 module.exports = {
