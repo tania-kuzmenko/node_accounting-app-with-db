@@ -2,10 +2,36 @@ const { Expense } = require('../models/Expense.model.js');
 const userService = require('../services/user.service.js');
 const { Sequelize } = require('../db');
 
-const getAll = async () => {
-  const result = await Expense.findAll();
+const getAll = async ({ userId, categories, from, to }) => {
+  // const result = await Expense.findAll();
+  // return result;
 
-  return result;
+  const where = {};
+
+  if (userId) {
+    where.userId = Number(userId);
+  }
+
+  if (categories) {
+    const { Op } = require('sequelize');
+    const cats = Array.isArray(categories) ? categories : [categories];
+
+    where.category = { [Op.in]: cats };
+  }
+
+  if (from) {
+    const { Op } = require('sequelize');
+
+    where.spentAt = { ...where.spentAt, [Op.gte]: new Date(from) };
+  }
+
+  if (to) {
+    const { Op } = require('sequelize');
+
+    where.spentAt = { ...where.spentAt, [Op.lte]: new Date(to) };
+  }
+
+  return Expense.findAll({ where });
 };
 
 const getById = async (id) => {
@@ -22,7 +48,7 @@ const create = async ({ userId, spentAt, title, amount, category, note }) => {
   }
 
   try {
-    return Expense.create({
+    return await Expense.create({
       userId,
       spentAt,
       title,
@@ -62,7 +88,9 @@ const update = async ({
     },
   );
 
-  return Expense.findByPk(id);
+  const updated = await Expense.findByPk(id);
+
+  return updated;
 };
 
 const remove = async (id) => {

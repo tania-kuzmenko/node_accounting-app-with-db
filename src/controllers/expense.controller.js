@@ -2,30 +2,36 @@ const expenseService = require('../services/expense.service.js');
 const userService = require('../services/user.service.js');
 
 const get = async (req, res) => {
-  let result = await expenseService.getAll();
   const { userId, categories, from, to } = req.query;
 
-  if (userId) {
-    result = result.filter((e) => e.userId === Number(userId));
-  }
+  const result = await expenseService.getAll({
+    userId,
+    categories,
+    from,
+    to,
+  });
 
-  if (categories) {
-    const cats = Array.isArray(categories) ? categories : [categories];
+  // if (userId) {
+  //   result = result.filter((e) => e.userId === Number(userId));
+  // }
 
-    result = result.filter((e) => cats.includes(e.category));
-  }
+  // if (categories) {
+  //   const cats = Array.isArray(categories) ? categories : [categories];
 
-  if (from) {
-    const fromDate = new Date(from);
+  //   result = result.filter((e) => cats.includes(e.category));
+  // }
 
-    result = result.filter((e) => new Date(e.spentAt) >= fromDate);
-  }
+  // if (from) {
+  //   const fromDate = new Date(from);
 
-  if (to) {
-    const toDate = new Date(to);
+  //   result = result.filter((e) => new Date(e.spentAt) >= fromDate);
+  // }
 
-    result = result.filter((e) => new Date(e.spentAt) <= toDate);
-  }
+  // if (to) {
+  //   const toDate = new Date(to);
+
+  //   result = result.filter((e) => new Date(e.spentAt) <= toDate);
+  // }
 
   res.send(result);
 };

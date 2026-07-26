@@ -12,8 +12,10 @@ const getById = async (id) => {
   return category;
 };
 
-const create = (name) => {
-  return Category.create({ name });
+const create = async (name) => {
+  const created = await Category.create({ name });
+
+  return created;
 };
 
 const update = async ({ id, name }) => {
