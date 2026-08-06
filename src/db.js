@@ -10,6 +10,7 @@ dotenv.config();
 global.TextEncoder = utils.TextEncoder;
 
 const {
+  DATABASE_URL,
   POSTGRES_HOST,
   POSTGRES_PORT,
   POSTGRES_USER,
@@ -22,13 +23,23 @@ const {
   replace if needed with your own
 */
 
-const sequelize = new Sequelize({
-  database: POSTGRES_DB || 'postgres',
-  username: POSTGRES_USER || 'postgres',
-  host: POSTGRES_HOST || 'localhost',
-  dialect: 'postgres',
-  port: Number(POSTGRES_PORT) || 5433,
-  password: POSTGRES_PASSWORD || 'Begemotik12!@',
-});
+const sequelize = DATABASE_URL
+  ? new Sequelize(DATABASE_URL, {
+      dialect: 'postgres',
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      },
+    })
+  : new Sequelize({
+      database: POSTGRES_DB || 'postgres',
+      username: POSTGRES_USER || 'postgres',
+      host: POSTGRES_HOST || 'localhost',
+      dialect: 'postgres',
+      port: Number(POSTGRES_PORT) || 5433,
+      password: POSTGRES_PASSWORD || 'Begemotik12!@',
+    });
 
 module.exports = { sequelize };

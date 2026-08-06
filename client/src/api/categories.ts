@@ -1,7 +1,7 @@
 import type { Category } from '../types/Category';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:5700';
+axios.defaults.baseURL = 'https://node-accounting-app-with-db-2.onrender.com'//'http://localhost:5700';
 
 export function getAll(): Promise<Category[]> {
   return axios.get<Category[]>('/categories').then(response => response.data);
