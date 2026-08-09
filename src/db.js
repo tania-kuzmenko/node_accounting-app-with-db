@@ -43,6 +43,6 @@ const sequelize = DB_URL
       password: POSTGRES_PASSWORD || 'Begemotik12!@',
     });
 
-sequelize.sync();
+//sequelize.sync();
 
 module.exports = { sequelize };
