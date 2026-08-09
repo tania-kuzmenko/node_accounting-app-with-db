@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 'use strict';
 
 const Sequelize = require('sequelize');
@@ -10,7 +11,7 @@ dotenv.config();
 global.TextEncoder = utils.TextEncoder;
 
 const {
-  DATABASE_URL,
+  DB_URL,
   POSTGRES_HOST,
   POSTGRES_PORT,
   POSTGRES_USER,
@@ -23,8 +24,8 @@ const {
   replace if needed with your own
 */
 
-const sequelize = DATABASE_URL
-  ? new Sequelize(DATABASE_URL, {
+const sequelize = DB_URL
+  ? new Sequelize(DB_URL, {
       dialect: 'postgres',
       dialectOptions: {
         ssl: {
