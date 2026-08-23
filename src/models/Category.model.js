@@ -3,8 +3,8 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../db.js');
 
-const User = sequelize.define(
-  'User',
+const Category = sequelize.define(
+  'Category',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -18,17 +18,10 @@ const User = sequelize.define(
     },
   },
   {
-    tableName: 'users',
+    tableName: 'categories',
     createdAt: false,
     updatedAt: false,
   },
 );
 
-User.addHook('beforeBulkDestroy', async (options) => {
-  if (options.truncate) {
-    await sequelize.query('TRUNCATE "users" CASCADE');
-    options.truncate = false; // запобігаємо повторному truncate
-  }
-});
-
-module.exports = { User };
+module.exports = { Category };
